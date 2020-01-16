@@ -2,7 +2,7 @@
 
 This repository is where your classwork and lab assignments will go.
 
-## Prerequisites
+## Prerequisites that i have
 
 Before you begin note the following prerequisites for your environment.
 
