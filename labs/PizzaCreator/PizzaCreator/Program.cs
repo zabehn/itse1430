@@ -1,5 +1,6 @@
 ﻿/*
  * ITSE 1430
+ * Spring 2020
  * Zachary Behn
  */
 
@@ -11,7 +12,9 @@ namespace PizzaCreator
     {
         static void Main ( string[] args )
         {
-            Console.WriteLine("Hello World!");
+            Console.WriteLine("ITSE 1430\n" +
+                "Spring 2020\n" +
+                "Zachary Behn\n");
         }
     }
 }
