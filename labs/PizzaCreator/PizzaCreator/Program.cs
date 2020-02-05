@@ -49,7 +49,7 @@ namespace PizzaCreator
                     switch(input.ToLower())
                     {
                         case "y":
-                            createOrder();break;
+                            createOrder();return;
                         case "n":
                             return;
                         default: Console.WriteLine("invalid option, try again");break;
@@ -60,6 +60,18 @@ namespace PizzaCreator
             {
                 createOrder();
             }
+        }
+
+        private static void resetValues ()
+        {
+            size="";
+            price = 0;
+            sauce = "";
+            meats = new string[4];
+            vegetables = new string[4];
+            selectedMeats = new bool[4];
+            selectedVegetables = new bool[4];
+
         }
 
         private static bool confirmQuit ()
@@ -83,22 +95,68 @@ namespace PizzaCreator
 
         private static void modifyOrder ()
         {
-            Console.WriteLine("viewing price\npress any key to continue");
-            Console.ReadLine();
+            if (String.IsNullOrEmpty(size))
+            {
+                Console.WriteLine("There is no order, please press enter to return to the Main Menu");
+                Console.ReadLine();
+                return;
+            }
+
+            do
+            {
+                Console.WriteLine("-----------------------------------------------------");
+                Console.WriteLine("Modifying Order");
+                Console.WriteLine("s. Size");
+                Console.WriteLine("a. Sauce");
+                Console.WriteLine("c. Cheese");
+                Console.WriteLine("m. Meats");
+                Console.WriteLine("v. Vegetables");
+                Console.WriteLine("p. Delivery/Take Out");
+                Console.WriteLine("d. Done");
+                Console.WriteLine("please enter a key ");
+                string temp = Console.ReadLine();
+
+                switch(temp.ToLower())
+                {
+                    case "s":
+                        size = pickSize(true);break;
+                    case "a":
+                        sauce = pickSauce(true);break;
+                    case "c":
+                        extraCheese = pickCheese(true);break;
+                    case "m":
+                        meats = pickMeats();break;
+                    case "v":
+                        vegetables = pickVegetables();break;
+                    case "p":
+                        isDelivery = pickMethodOfDelivery(true);break;
+                    case "d":
+                        return;
+                    default:
+                        Console.WriteLine("Invalid key, please try again");break;
+                }
+            } while (true);
         }
 
         private static void viewOrder ()
         {
+            if(String.IsNullOrEmpty(size))
+            {
+                Console.WriteLine("There is no order, please press enter to return to the Main Menu");
+                Console.ReadLine();
+                return;
+            }
+            Console.WriteLine("--------------------------------------------");
             Console.WriteLine("Order Summary");
-            Console.WriteLine($"{size} Pizza:"+ $"${sizePrice}".PadLeft(20));
-            Console.WriteLine($"{sauce} Sauce" + ((sauce == "Traditional")? "$0".PadLeft(20) : "$1".PadLeft(20)));
-            Console.WriteLine(extraCheese? "Extra Cheese:"+"$1.25".PadLeft(20) : "Normal Cheese:"+"$0".PadLeft(20));
+            Console.WriteLine(String.Format("{0,20}{1,40:C}",$"{size} Pizza:", sizePrice));
+            Console.WriteLine(String.Format("{0,20}{1,40:C}", $"{sauce} Sauce:",((sauce == "Traditional")? 0 : 1)));
+            Console.WriteLine(extraCheese? String.Format("{0,20}{1,40:C}", "Extra Cheese:",1.25) : String.Format("{0,20}{1,40:C}", "Normal Cheese:",0));
             Console.WriteLine("Meats");
             foreach (string s in meats)
             {
                 if(!String.IsNullOrEmpty(s))
                 {
-                    Console.WriteLine($"\t{s}:"+"$0.75".PadLeft(20));
+                    Console.WriteLine(String.Format("{0,30}{1,30:C}", $"{s}:",0.75));
                 }
             }
             Console.WriteLine("Vegetables");
@@ -106,11 +164,12 @@ namespace PizzaCreator
             {
                 if (!String.IsNullOrEmpty(s))
                 {
-                    Console.WriteLine($"\t{s}:"+"$0.50".PadLeft(20));
+                    Console.WriteLine(String.Format("{0,30}{1,30:C}", $"{s}:",0.50));
                 }
             }
-            Console.WriteLine(isDelivery? "Delivery:"+"$2.50".PadLeft(20) : "Take Out:" + "$0".PadLeft(20));
-            Console.WriteLine("Total:" + $"${price}".PadLeft(20));
+            Console.WriteLine(isDelivery? String.Format("{0,20}{1,40:C}", "Delivery:",2.50) : String.Format("{0,20}{1,40:C}", "Take Out:",0));
+            Console.WriteLine(String.Format("{0,20}{1,40:C}", "Total:", price));
+            Console.WriteLine("--------------------------------------------------------------------------------------");
             Console.WriteLine("press the enter key to continue");
             Console.WriteLine();
             Console.ReadLine();
@@ -120,25 +179,31 @@ namespace PizzaCreator
         static bool extraCheese, isDelivery;
         static string[] meats, vegetables;
         static double price, sizePrice;
+        static bool[] selectedVegetables, selectedMeats;
 
         private static void createOrder ()
         {
-            price = 0;
-            
-            Console.WriteLine("\ncreating order");
-            size = pickSize();
-            sauce = pickSauce();
-            extraCheese = pickCheese();
+            resetValues();
+            Console.WriteLine("\n-----------------------------------------------------------------------");
+            Console.WriteLine("Creating Order");
+            isDelivery = pickMethodOfDelivery(false);
+            size = pickSize(false);
+            extraCheese = pickCheese(false);
+            sauce = pickSauce(false);
             meats = pickMeats();
             vegetables = pickVegetables();
-            isDelivery = pickMethodOfDelivery();  
+            viewOrder();
         }
 
-        private static bool pickMethodOfDelivery ()
+        private static bool pickMethodOfDelivery (bool modify)
         {
             do
             {
                 Console.WriteLine("Please pick one, Delivery or Take Out");
+                if(!String.IsNullOrEmpty(size))
+                {
+                    Console.WriteLine("Currently selected: "+(isDelivery? "Delivery":"Take Out"));
+                }
                 Console.WriteLine("D. Delivery ($2.50)");
                 Console.WriteLine("T. Take Out ($0)");
 
@@ -146,10 +211,17 @@ namespace PizzaCreator
                 switch (input.ToLower())
                 {
                     case "d":
-                    price += 2.50;
-                    return true;
+                        if (!modify || (modify && !isDelivery)) 
+                        {
+                            price += 2.50;
+                        }
+                        return true;
                     case "t":
-                    return false;
+                        if (modify && isDelivery)
+                        {
+                            price-=2.50;
+                        }
+                        return false;
                     default: Console.WriteLine("Invalid option, try again"); break;
                 }
             } while (true);
@@ -157,8 +229,7 @@ namespace PizzaCreator
 
         private static string[] pickVegetables ()
         {
-                bool[] selectedVegetables = new bool[4];
-                vegetables = new string[4];
+            
             do
             {
                 Console.WriteLine("Please pick or deselect Vegetables or select Done, ($.50 each)");
@@ -235,21 +306,33 @@ namespace PizzaCreator
             } while (true);
         }
 
-        private static bool pickCheese ()
+        private static bool pickCheese (bool modify)
         {
             do
             {
                 Console.WriteLine("Please pick one Cheese option");
                 Console.WriteLine("E. Extra ($1.25)");
                 Console.WriteLine("N. Normal ($0)");
+                if(!String.IsNullOrEmpty(sauce))
+                {
+                    Console.WriteLine($"Currently Selected is "+(extraCheese? "Extra":"Normal" ));
+                }
+
 
                 var input = Console.ReadLine();
                 switch (input.ToLower())
                 {
                     case "e":
-                        price += 1.25;
+                        if (!modify || (modify && !extraCheese))
+                        {
+                            price += 1.25;
+                        }
                         return true;
                     case "n":
+                        if(modify && extraCheese)
+                        {
+                            price-=1.25;
+                        }
                         return false;
                     default: Console.WriteLine("Invalid option, try again"); break;
                 }
@@ -258,9 +341,6 @@ namespace PizzaCreator
 
         private static string[] pickMeats ()
         {
-            bool[] selectedMeats = new bool[4];
-            meats = new string[4];
-
             do
             {
                 Console.WriteLine("Please pick or deselect Vegetables or select Done, ($.75 each)");
@@ -346,7 +426,7 @@ namespace PizzaCreator
             }
         }
 
-        private static string pickSauce ()
+        private static string pickSauce (bool modify)
         {
             do
             {
@@ -354,24 +434,38 @@ namespace PizzaCreator
                 Console.WriteLine("T. Traditional ($0)");
                 Console.WriteLine("G. Garlic ($1)");
                 Console.WriteLine("O. Oregano ($1)");
+                if (!String.IsNullOrEmpty(sauce))
+                {
+                    Console.WriteLine($"Currently Selected is: {sauce} sauce");
+                }
 
                 var input = Console.ReadLine();
                 switch (input.ToLower())
                 {
                     case "t":
+                        if(modify && !sauce.Equals("Traditional"))
+                        {
+                            price-=1;
+                        }
                         return "Traditional";
                     case "g":
-                        price += 1;
+                        if (!modify || (modify && sauce.Equals("Traditional")))
+                        {
+                            price += 1;
+                        }
                         return "Garlic";
                     case "o":
-                        price += 1;
+                        if (!modify || (modify && sauce.Equals("Traditional")))
+                        {
+                            price += 1;
+                        }
                         return "Oregano";
                     default: Console.WriteLine("Invalid option, try again"); break;
                 }
             } while (true);
         }
 
-        private static string pickSize ()
+        private static string pickSize (bool modify)
         {
             do
             {
@@ -379,6 +473,15 @@ namespace PizzaCreator
                 Console.WriteLine("L. Large ($8.75)");
                 Console.WriteLine("M. Medium ($6.25)");
                 Console.WriteLine("S. Small ($5)");
+                if (!String.IsNullOrEmpty(size))
+                {
+                    Console.WriteLine($"Currently Selecected is {size}");
+                }
+
+                if (modify)
+                {
+                    price-=sizePrice;
+                }
 
                 var input = Console.ReadLine();
                 switch(input.ToLower())
@@ -412,10 +515,13 @@ namespace PizzaCreator
         {
             do
             {
+                Console.WriteLine("---------------------------------------------------------");
                 Console.WriteLine("C. Create Order\n" +
                     "V. View Order\n" +
                     "M. Modify Order\n" +
-                    "Q. Quit\n" + "please enter a valid response ");
+                    "Q. Quit");
+                Console.WriteLine("\nPrice = "+price.ToString("C"));
+                Console.WriteLine("\nplease enter a valid response ");
 
                 var input = Console.ReadLine();
                 switch(input.ToLower())
