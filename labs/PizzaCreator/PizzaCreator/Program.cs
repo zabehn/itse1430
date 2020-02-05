@@ -131,7 +131,7 @@ namespace PizzaCreator
                     case "p":
                         isDelivery = pickMethodOfDelivery(true);break;
                     case "d":
-                        return;
+                        viewOrder(); return;
                     default:
                         Console.WriteLine("Invalid key, please try again");break;
                 }
