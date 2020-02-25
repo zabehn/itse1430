@@ -49,33 +49,15 @@ namespace CharacterCreator
                 return false;
             }
 
-            if(Strength>100 || Strength < 1)
+            if(Race == null)
             {
-                error = "Strength must be between 1 and 100";
+                error = "Race is required";
                 return false;
             }
 
-            if (Intelligence>100 || Intelligence < 1)
+            if (Profession == null)
             {
-                error = "Intelligence must be between 1 and 100";
-                return false;
-            }
-
-            if (Agility>100 || Agility < 1)
-            {
-                error = "Agility must be between 1 and 100";
-                return false;
-            }
-
-            if (Constitution>100 || Constitution < 1)
-            {
-                error = "Constitution must be between 1 and 100";
-                return false;
-            }
-
-            if (Charisma>100 || Charisma < 1)
-            {
-                error = "Charisma must be between 1 and 100";
+                error = "Profession is required";
                 return false;
             }
 

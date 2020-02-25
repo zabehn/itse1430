@@ -33,7 +33,12 @@ namespace CharacterCreator.Winforms
         {
             var characterFormCreator = new CharacterForm();
 
-            characterFormCreator.ShowDialog(this);
+            if (characterFormCreator.ShowDialog(this) != DialogResult.OK)
+                return;
+
+            _character = characterFormCreator.Character;
         }
+
+        private Character _character;
     }
 }
