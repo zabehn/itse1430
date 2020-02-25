@@ -62,7 +62,7 @@
             this.CancelCharacter.Location = new System.Drawing.Point(228, 426);
             this.CancelCharacter.Name = "CancelCharacter";
             this.CancelCharacter.Size = new System.Drawing.Size(75, 23);
-            this.CancelCharacter.TabIndex = 20;
+            this.CancelCharacter.TabIndex = 10;
             this.CancelCharacter.Text = "Cancel";
             this.CancelCharacter.UseVisualStyleBackColor = true;
             this.CancelCharacter.Click += new System.EventHandler(this.OnCancel);
@@ -73,7 +73,7 @@
             this.ConfirmCharacter.Location = new System.Drawing.Point(147, 426);
             this.ConfirmCharacter.Name = "ConfirmCharacter";
             this.ConfirmCharacter.Size = new System.Drawing.Size(75, 23);
-            this.ConfirmCharacter.TabIndex = 19;
+            this.ConfirmCharacter.TabIndex = 9;
             this.ConfirmCharacter.Text = "Save";
             this.ConfirmCharacter.UseVisualStyleBackColor = true;
             this.ConfirmCharacter.Click += new System.EventHandler(this.OnOk);
@@ -85,14 +85,14 @@
             this.RaceComboBox.Location = new System.Drawing.Point(80, 43);
             this.RaceComboBox.Name = "RaceComboBox";
             this.RaceComboBox.Size = new System.Drawing.Size(121, 21);
-            this.RaceComboBox.TabIndex = 4;
+            this.RaceComboBox.TabIndex = 1;
             // 
             // textName
             // 
             this.textName.Location = new System.Drawing.Point(80, 8);
             this.textName.Name = "textName";
             this.textName.Size = new System.Drawing.Size(211, 20);
-            this.textName.TabIndex = 2;
+            this.textName.TabIndex = 0;
             // 
             // ProfessionComboBox
             // 
@@ -101,7 +101,7 @@
             this.ProfessionComboBox.Location = new System.Drawing.Point(80, 83);
             this.ProfessionComboBox.Name = "ProfessionComboBox";
             this.ProfessionComboBox.Size = new System.Drawing.Size(121, 21);
-            this.ProfessionComboBox.TabIndex = 6;
+            this.ProfessionComboBox.TabIndex = 2;
             // 
             // label1
             // 
@@ -140,7 +140,7 @@
             0});
             this.numberStrength.Name = "numberStrength";
             this.numberStrength.Size = new System.Drawing.Size(50, 20);
-            this.numberStrength.TabIndex = 8;
+            this.numberStrength.TabIndex = 3;
             this.numberStrength.Value = new decimal(new int[] {
             50,
             0,
@@ -157,7 +157,7 @@
             0});
             this.numberIntelligence.Name = "numberIntelligence";
             this.numberIntelligence.Size = new System.Drawing.Size(50, 20);
-            this.numberIntelligence.TabIndex = 10;
+            this.numberIntelligence.TabIndex = 4;
             this.numberIntelligence.Value = new decimal(new int[] {
             50,
             0,
@@ -174,7 +174,7 @@
             0});
             this.numberAgility.Name = "numberAgility";
             this.numberAgility.Size = new System.Drawing.Size(50, 20);
-            this.numberAgility.TabIndex = 12;
+            this.numberAgility.TabIndex = 5;
             this.numberAgility.Value = new decimal(new int[] {
             50,
             0,
@@ -191,7 +191,7 @@
             0});
             this.numberConstitution.Name = "numberConstitution";
             this.numberConstitution.Size = new System.Drawing.Size(50, 20);
-            this.numberConstitution.TabIndex = 14;
+            this.numberConstitution.TabIndex = 6;
             this.numberConstitution.Value = new decimal(new int[] {
             50,
             0,
@@ -208,7 +208,7 @@
             0});
             this.numberCharisma.Name = "numberCharisma";
             this.numberCharisma.Size = new System.Drawing.Size(50, 20);
-            this.numberCharisma.TabIndex = 16;
+            this.numberCharisma.TabIndex = 7;
             this.numberCharisma.Value = new decimal(new int[] {
             50,
             0,
@@ -274,7 +274,7 @@
             this.richTextDescription.Location = new System.Drawing.Point(80, 318);
             this.richTextDescription.Name = "richTextDescription";
             this.richTextDescription.Size = new System.Drawing.Size(211, 102);
-            this.richTextDescription.TabIndex = 21;
+            this.richTextDescription.TabIndex = 8;
             this.richTextDescription.Text = "";
             // 
             // CharacterForm
