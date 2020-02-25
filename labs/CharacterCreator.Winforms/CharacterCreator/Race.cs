@@ -32,6 +32,6 @@ namespace CharacterCreator
             items[3] = new Race("Half Elf");
             items[4] = new Race("Human");
             return items;
-        }
+        }      
     }
 }

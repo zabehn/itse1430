@@ -17,6 +17,17 @@ namespace CharacterCreator.Winforms
             InitializeComponent();
         }
 
+        public CharacterForm( Character character) : this(character,character != null)
+        {
+
+        }
+
+        public CharacterForm( Character character, bool edit) : this()
+        {
+            Character = character;
+            Text = edit? "Edit Character":"Create New Character";
+        }
+
         private void OnCancel (object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
@@ -47,7 +58,7 @@ namespace CharacterCreator.Winforms
             character.Agility = (int) numberAgility.Value;
             character.Constitution = (int) numberConstitution.Value;
             character.Charisma = (int) numberCharisma.Value;
-            character.Description = textDescription.Text.Trim();
+            character.Description = richTextDescription.Text.Trim();
 
             if (ProfessionComboBox.SelectedItem is Profession profession)
                 character.Profession = profession;
@@ -67,6 +78,24 @@ namespace CharacterCreator.Winforms
             var professions = Professions.GetAllProfessions();
             RaceComboBox.Items.AddRange(races);
             ProfessionComboBox.Items.AddRange(professions);
+
+            if(Character != null)
+            {
+                textName.Text = Character.Name;
+                richTextDescription.Text = Character.Description??"";
+                numberAgility.Value = Character.Agility;
+                numberCharisma.Value = Character.Charisma;
+                numberConstitution.Value = Character.Constitution;
+                numberIntelligence.Value = Character.Intelligence;
+                numberStrength.Value = Character.Strength;
+                ProfessionComboBox.Text = Character.Profession.Description;
+                RaceComboBox.Text = Character.Race.Description;
+            }
+        }
+
+        private void CharacterForm_Load ( object sender, EventArgs e )
+        {
+
         }
     }
 }
