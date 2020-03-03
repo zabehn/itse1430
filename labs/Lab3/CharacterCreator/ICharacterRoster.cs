@@ -9,14 +9,14 @@ namespace CharacterCreator
     interface ICharacterRoster
     {
 
-        Character AddCharacter (Character character);
+        Character Add (Character character);
 
-        void DeleteCharacter (int id);
+        void Delete (int id);
 
-        Character GetCharacter ( int id );
+        Character Get ( int id );
 
-        Character[] GetAllCharacters ();
+        Character[] GetAll ();
 
-        void UpdateCharacter (int id);
+        void Update (int id, Character character);
     }
 }

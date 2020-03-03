@@ -15,6 +15,7 @@ namespace CharacterCreator.Winforms
         public MainForm()
         {
             InitializeComponent();
+            _characters = new CharacterRoster();
         }
 
         private void OnFileExit ( object sender, EventArgs e )
@@ -22,69 +23,54 @@ namespace CharacterCreator.Winforms
             Close();
         }
 
+        protected override void OnLoad ( EventArgs e )
+        {
+            base.OnLoad(e);
+
+            UpdateCharacterList();
+        }
+
         private void OnEdit ( object sender, EventArgs e )
         {
-            if(_character == null)
-            {
-                DisplayMessage("No character to edit", true,out var result) ;
+            var character = GetSelectedCharacter(out var Id);
+            if (character == null)
                 return;
-            }
 
-            var characterFormCreator = new CharacterForm(_character);
+            var characterFormCreator = new CharacterForm(character);
 
             if (characterFormCreator.ShowDialog(this) != DialogResult.OK)
                 return;
 
-            _character = characterFormCreator.Character;
-            UpdateCharacter(false);
+            _characters.Update(Id,characterFormCreator.Character);
         }
 
-        private void UpdateCharacter ( bool deletedCharacter )
+        private Character GetSelectedCharacter (out int Id)
         {
-            if (deletedCharacter)
-            {
-                label10.Text = "No Character Created";
-
-                label1.Text = "Name";
-                label2.Text = "Race";
-                label3.Text = "Profession";
-                label4.Text = "Strength";
-                label5.Text = "Intelligence";
-                label6.Text = "Agility";
-                label7.Text = "Constitution";
-                label8.Text = "Charisma";
-                label9.Text = "Description";
-            }
-            else
-            {
-                label10.Text = "Current Character Created";
-
-                label1.Text = $"Name: {_character.Name}";
-                label2.Text = $"Race: {_character.Race.Description}";
-                label3.Text = $"Profession: {_character.Profession.Description}";
-                label4.Text = $"Strength: {_character.Strength}";
-                label5.Text = $"Intelligence: {_character.Intelligence}";
-                label6.Text = $"Agility: {_character.Agility}";
-                label7.Text = $"Constitution: {_character.Constitution}";
-                label8.Text = $"Charisma: {_character.Charisma}";
-                label9.Text = $"Description: {_character.Description}";
-            }
+            Id = characterList.SelectedIndex++;
+            return characterList.SelectedItem;
         }
 
         private void OnDelete ( object sender, EventArgs e )
         {
-            DialogResult result;
-            if (_character == null)
-            {
-                DisplayMessage("No character to delete", true, out result);
+            var character = GetSelectedCharacter(out var Id);
+            if (character == null)
                 return;
-            }
 
-            DisplayMessage($"Are you sure you want to delete the Character, {_character.Name}?", false, out result);
+            DisplayMessage($"Are you sure you want to delete the Character, {character.Name}?", false, out var result);
             if (result == DialogResult.OK)
             {
-                _character = null;
-                UpdateCharacter(true);
+                _characters.Delete(character.Id);
+            }
+        }
+
+        private void UpdateCharacterList()
+        {
+            characterList.Items.Clear();
+            var c = _characters.GetAll();
+
+            foreach (var character in c)
+            {
+                characterList.Items.Add(character);
             }
         }
 
@@ -103,7 +89,6 @@ namespace CharacterCreator.Winforms
                 return;
 
             _character = characterFormCreator.Character;
-            UpdateCharacter(false); 
         }
 
         private void DisplayMessage( string message, bool error, out DialogResult result )
@@ -118,6 +103,6 @@ namespace CharacterCreator.Winforms
             }
         }
 
-        private Character _character;
+        private CharacterRoster _characters;
     }
 }

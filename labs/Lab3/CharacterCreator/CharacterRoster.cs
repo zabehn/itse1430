@@ -6,65 +6,116 @@ using System.Threading.Tasks;
 
 namespace CharacterCreator
 {
-    class CharacterRoster : ICharacterRoster
+    public class CharacterRoster : ICharacterRoster
     {
-        Character[] _characters;
+        private readonly List<Character> _characters = new List<Character>();
+        private int _id = 1;
 
         public CharacterRoster()
         {
-            _characters = new Character[100];
+            
         }
 
-        public Character AddCharacter ( Character character )
+        public Character Add ( Character character )
         {
-            if (!ValidateCharacter(character.Name, out var message))
+            if (!ValidateCharacter(character, out var message))
             {
-                //TODO: show message returned and break method
+                //TODO: show message returned
                 return null;
             }
+            character.Id = _id++;
+            _characters.Add(character);
 
-            for (var i = 0; i<_characters.Length; i++)
+            return CloneCharacter(character);
+        }
+
+        public void Delete ( int id )
+        {
+            //TODO: return error
+            if (id>_id || id<0)
+                return;
+
+            _characters.Remove(FindById(id));
+        }
+
+        public Character[] GetAll ()
+        {
+            var items = new Character[_characters.Count];
+            var Index = 0;
+            foreach (var c in _characters)
             {
-                if (_characters[i]==null)
-                {
-                    character.Id = i+1;
-                    _characters[i] = character;
-                    break;
-                }
+                items[Index++] = c;
+            }
+            return items;
+        }
+
+        public Character Get ( int id )
+        {
+            //TODO: return error
+            if (id<1 || id>_id)
+                return null;
+
+            return CloneCharacter(FindById(id));
+        }
+
+        public void Update ( int id, Character character )
+        {
+            //TODO: return error;
+            if (!ValidateCharacter(character, out var message) || id<0 || id>_characters.Capacity)
+                return;
+
+            var c = FindById(id);
+            c = character;
+        }
+
+        private Character FindById(int id)
+        {
+            foreach (var c in _characters)
+            {
+                if (c.Id == id)
+                    return c;
+            }
+            return null;
+        }
+
+        private Character CloneCharacter( Character character)
+        {
+            return new Character() {
+                Id = character.Id,
+                Name = character.Name,
+                Profession = character.Profession,
+                Race = character.Race,
+                Strength = character.Strength,
+                Agility = character.Agility,
+                Charisma = character.Charisma,
+                Constitution = character.Constitution,
+                Intelligence = character.Intelligence,
+                Description = character.Description
+            };
+        }
+
+        private bool ValidateCharacter(Character character, out string message)
+        {
+            if(character == null)
+            {
+                message = "null character";
+                return false;
             }
 
-            return CreateTempCharacter(character);
-        }
+            if (!character.Validate(out message))
+                return false; 
 
-        public void DeleteCharacter ( int id )
-        {
-            throw new NotImplementedException();
-        }
-
-        public Character[] GetAllCharacters ()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Character GetCharacter ( int id )
-        {
-            throw new NotImplementedException();
-        }
-
-        public void UpdateCharacter ( int id )
-        {
-            throw new NotImplementedException();
-        }
-
-        private Character CreateTempCharacter( Character character)
-        {
-            throw new NotImplementedException();
-        }
-
-        private bool ValidateCharacter(string name, out string message)
-        {
             //TODO validate character and then make sure name isn't in list
-            throw new NotImplementedException();
+            foreach (var c in _characters)
+            {
+                if (String.Compare(c?.Name, character.Name,true) == 0)
+                {
+                    message = "Name already exists";
+                    return false;
+                }
+            }
+            message = "";
+            return true;
         }
     }
 }

@@ -27,7 +27,7 @@ namespace CharacterCreator
         }
         private string _description;
 
-        internal int Id { get; set; }
+        public int Id { get; set; }
 
         public int Strength { get; set; } = 50;
 
