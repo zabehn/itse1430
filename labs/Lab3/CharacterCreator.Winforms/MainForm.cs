@@ -26,13 +26,12 @@ namespace CharacterCreator.Winforms
         protected override void OnLoad ( EventArgs e )
         {
             base.OnLoad(e);
-
             UpdateCharacterList();
         }
 
         private void OnEdit ( object sender, EventArgs e )
         {
-            var character = GetSelectedCharacter(out var Id);
+            var character = GetSelectedCharacter();
             if (character == null)
                 return;
 
@@ -41,18 +40,18 @@ namespace CharacterCreator.Winforms
             if (characterFormCreator.ShowDialog(this) != DialogResult.OK)
                 return;
 
-            _characters.Update(Id,characterFormCreator.Character);
+            _characters.Update(character.Id,characterFormCreator.Character as Character);
+            UpdateCharacterList();
         }
 
-        private Character GetSelectedCharacter (out int Id)
+        private Character GetSelectedCharacter ()
         {
-            Id = characterList.SelectedIndex++;
-            return characterList.SelectedItem;
+            return characterList.SelectedItem as Character;
         }
 
         private void OnDelete ( object sender, EventArgs e )
         {
-            var character = GetSelectedCharacter(out var Id);
+            var character = GetSelectedCharacter();
             if (character == null)
                 return;
 
@@ -61,16 +60,17 @@ namespace CharacterCreator.Winforms
             {
                 _characters.Delete(character.Id);
             }
+            UpdateCharacterList();
         }
 
         private void UpdateCharacterList()
         {
             characterList.Items.Clear();
-            var c = _characters.GetAll();
+            var all = _characters.GetAll();
 
-            foreach (var character in c)
+            foreach (var c in all)
             {
-                characterList.Items.Add(character);
+                characterList.Items.Add(c);
             }
         }
 
@@ -88,7 +88,8 @@ namespace CharacterCreator.Winforms
             if (characterFormCreator.ShowDialog(this) != DialogResult.OK)
                 return;
 
-            _character = characterFormCreator.Character;
+            _characters.Add(characterFormCreator.Character as Character);
+            UpdateCharacterList();
         }
 
         private void DisplayMessage( string message, bool error, out DialogResult result )

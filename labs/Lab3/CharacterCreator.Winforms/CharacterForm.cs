@@ -53,7 +53,7 @@ namespace CharacterCreator.Winforms
             var character = new Character();
 
             character.Name = textName.Text?.Trim();
-            character.Strength = (int)numberStrength.Value;
+            character.Strength = (int) numberStrength.Value;
             character.Intelligence = (int) numberIntelligence.Value;
             character.Agility = (int) numberAgility.Value;
             character.Constitution = (int) numberConstitution.Value;
@@ -68,7 +68,7 @@ namespace CharacterCreator.Winforms
             return character;
         }
 
-        public Character Character { get; set; }
+        public Character Character { get; private set; }
 
         protected override void OnLoad ( EventArgs e )
         {
@@ -82,7 +82,7 @@ namespace CharacterCreator.Winforms
             if(Character != null)
             {
                 textName.Text = Character.Name;
-                richTextDescription.Text = Character.Description??"";
+                richTextDescription.Text = Character.Description;
                 numberAgility.Value = Character.Agility;
                 numberCharisma.Value = Character.Charisma;
                 numberConstitution.Value = Character.Constitution;
@@ -91,11 +91,6 @@ namespace CharacterCreator.Winforms
                 ProfessionComboBox.Text = Character.Profession.Description;
                 RaceComboBox.Text = Character.Race.Description;
             }
-        }
-
-        private void CharacterForm_Load ( object sender, EventArgs e )
-        {
-
         }
     }
 }

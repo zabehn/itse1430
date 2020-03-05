@@ -311,7 +311,6 @@
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Create New Character";
-            this.Load += new System.EventHandler(this.CharacterForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.numberStrength)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numberIntelligence)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numberAgility)).EndInit();

@@ -8,12 +8,12 @@ namespace CharacterCreator
 {
     public class CharacterRoster : ICharacterRoster
     {
-        private readonly List<Character> _characters = new List<Character>();
+        private readonly List<Character> _characters;
         private int _id = 1;
 
         public CharacterRoster()
         {
-            
+            _characters = new List<Character>();
         }
 
         public Character Add ( Character character )
@@ -58,14 +58,15 @@ namespace CharacterCreator
             return CloneCharacter(FindById(id));
         }
 
-        public void Update ( int id, Character character )
+        public string Update ( int id, Character character )
         {
             //TODO: return error;
-            if (!ValidateCharacter(character, out var message) || id<0 || id>_characters.Capacity)
-                return;
+            if (!ValidateCharacter(character, out var message))
+                return message;
 
             var c = FindById(id);
-            c = character;
+            CopyCharacter(c, character, false);
+            return "";
         }
 
         private Character FindById(int id)
@@ -78,20 +79,26 @@ namespace CharacterCreator
             return null;
         }
 
+        private void CopyCharacter(Character target, Character source, bool copyId)
+        {
+            if(copyId)
+                target.Id = source.Id;
+            target.Name = source.Name;
+            target.Profession = new Profession(source.Profession.Description.Trim());
+            target.Race = new Race(source.Race.Description.Trim());
+            target.Strength = source.Strength;
+            target.Agility = source.Agility;
+            target.Charisma = source.Charisma;
+            target.Constitution = source.Constitution;
+            target.Intelligence = source.Intelligence;
+            target.Description = source.Description;
+        }
+
         private Character CloneCharacter( Character character)
         {
-            return new Character() {
-                Id = character.Id,
-                Name = character.Name,
-                Profession = character.Profession,
-                Race = character.Race,
-                Strength = character.Strength,
-                Agility = character.Agility,
-                Charisma = character.Charisma,
-                Constitution = character.Constitution,
-                Intelligence = character.Intelligence,
-                Description = character.Description
-            };
+            var temp = new Character();
+            CopyCharacter(temp, character, true);
+            return temp;
         }
 
         private bool ValidateCharacter(Character character, out string message)
@@ -105,7 +112,6 @@ namespace CharacterCreator
             if (!character.Validate(out message))
                 return false; 
 
-            //TODO validate character and then make sure name isn't in list
             foreach (var c in _characters)
             {
                 if (String.Compare(c?.Name, character.Name,true) == 0)
