@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CharacterCreator
 {
-    interface ICharacterRoster
+    public interface ICharacterRoster
     {
 
         Character Add (Character character);
@@ -15,7 +15,7 @@ namespace CharacterCreator
 
         Character Get ( int id );
 
-        Character[] GetAll ();
+        IEnumerable<Character> GetAll ();
 
         string Update (int id, Character character);
     }

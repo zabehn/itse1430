@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using CharacterCreator.Memory;
 
 namespace CharacterCreator.Winforms
 {
@@ -15,7 +16,7 @@ namespace CharacterCreator.Winforms
         public MainForm()
         {
             InitializeComponent();
-            _characters = new CharacterRoster();
+            _characters = new MemoryCharacterRoster();
         }
 
         private void OnFileExit ( object sender, EventArgs e )
@@ -36,17 +37,26 @@ namespace CharacterCreator.Winforms
                 return;
 
             var characterFormCreator = new CharacterForm(character);
+            characterFormCreator.Character = character;
+            do
+            {
+                if (characterFormCreator.ShowDialog(this) != DialogResult.OK)
+                    return;
 
-            if (characterFormCreator.ShowDialog(this) != DialogResult.OK)
-                return;
+                var error = _characters.Update(character.Id, characterFormCreator.Character);
+                if (String.IsNullOrEmpty(error))
+                {
+                    UpdateCharacterList();
+                    return;
+                }
 
-            _characters.Update(character.Id,characterFormCreator.Character as Character);
-            UpdateCharacterList();
+                DisplayMessage(error, true, out _);
+            } while (true);
         }
 
         private Character GetSelectedCharacter ()
         {
-            return characterList.SelectedItem as Character;
+            return characterList.SelectedItems.OfType<Character>().FirstOrDefault();
         }
 
         private void OnDelete ( object sender, EventArgs e )
@@ -68,10 +78,7 @@ namespace CharacterCreator.Winforms
             characterList.Items.Clear();
             var all = _characters.GetAll();
 
-            foreach (var c in all)
-            {
-                characterList.Items.Add(c);
-            }
+            characterList.Items.AddRange(all.ToArray());
         }
 
         private void OnHelpAbout ( object sender, EventArgs e)
@@ -83,13 +90,23 @@ namespace CharacterCreator.Winforms
 
         private void OnCharacterNew ( object sender, EventArgs e)
         {
-            var characterFormCreator = new CharacterForm();
+            do
+            {
+                var characterFormCreator = new CharacterForm();
 
-            if (characterFormCreator.ShowDialog(this) != DialogResult.OK)
-                return;
 
-            _characters.Add(characterFormCreator.Character as Character);
-            UpdateCharacterList();
+                if (characterFormCreator.ShowDialog(this) != DialogResult.OK)
+                    return;
+
+                var c = _characters.Add(characterFormCreator.Character);
+                if (c != null)
+                {
+                    UpdateCharacterList();
+                    return;
+                }
+
+                DisplayMessage("Add failed", true, out _);
+            } while (true);
         }
 
         private void DisplayMessage( string message, bool error, out DialogResult result )
@@ -104,6 +121,6 @@ namespace CharacterCreator.Winforms
             }
         }
 
-        private CharacterRoster _characters;
+        private readonly ICharacterRoster _characters;
     }
 }

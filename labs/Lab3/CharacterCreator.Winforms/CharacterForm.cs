@@ -36,16 +36,25 @@ namespace CharacterCreator.Winforms
 
         private void OnOk (object sender, EventArgs e)
         {
+            if (!ValidateChildren())
+                return;
+
             var character = getCharacter();
-            if(!character.Validate(out var message))
+            var errors = ObjectValidator.Validate(character);
+            if (errors.Any())
             {
-                MessageBox.Show(message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                DisplayError("Error");
                 return;
             }
 
             Character = character;
             DialogResult = DialogResult.OK;
             Close();
+        }
+
+        private void DisplayError ( string message )
+        {
+            MessageBox.Show(message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         private Character getCharacter ()
@@ -68,7 +77,7 @@ namespace CharacterCreator.Winforms
             return character;
         }
 
-        public Character Character { get; private set; }
+        public Character Character { get; set; }
 
         protected override void OnLoad ( EventArgs e )
         {
@@ -88,9 +97,26 @@ namespace CharacterCreator.Winforms
                 numberConstitution.Value = Character.Constitution;
                 numberIntelligence.Value = Character.Intelligence;
                 numberStrength.Value = Character.Strength;
-                ProfessionComboBox.Text = Character.Profession.Description;
-                RaceComboBox.Text = Character.Race.Description;
+
+                if(Character.Profession != null)
+                    ProfessionComboBox.SelectedText = Character.Profession.Description;
+                if(Character.Race != null)
+                    RaceComboBox.SelectedText = Character.Race.Description;
+
+                ValidateChildren();
             }
+        }
+
+        private void textName_Validating ( object sender, CancelEventArgs e )
+        {
+            var control = sender as TextBox;
+
+            if (String.IsNullOrEmpty(control.Text))
+            {
+                _errors.SetError(control, "Name is Required");
+                e.Cancel = true;
+            } else
+                _errors.SetError(control, "");
         }
     }
 }

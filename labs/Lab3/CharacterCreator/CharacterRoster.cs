@@ -6,122 +6,74 @@ using System.Threading.Tasks;
 
 namespace CharacterCreator
 {
-    public class CharacterRoster : ICharacterRoster
+    public abstract class CharacterRoster : ICharacterRoster
     {
-        private readonly List<Character> _characters;
-        private int _id = 1;
-
-        public CharacterRoster()
-        {
-            _characters = new List<Character>();
-        }
-
         public Character Add ( Character character )
         {
-            if (!ValidateCharacter(character, out var message))
-            {
-                //TODO: show message returned
+            if (character == null)
                 return null;
-            }
-            character.Id = _id++;
-            _characters.Add(character);
 
-            return CloneCharacter(character);
+            var errors = ObjectValidator.Validate(character);
+            if (errors.Any())
+                return null;
+
+            if (FindByName(character.Name) != null)
+                return null;
+
+            return AddCore(character);
         }
+
+        protected abstract Character FindByName ( string name );
+        protected abstract Character AddCore ( Character character );
 
         public void Delete ( int id )
         {
-            //TODO: return error
-            if (id>_id || id<0)
+            if (id<1)
                 return;
 
-            _characters.Remove(FindById(id));
+            DeleteCore( id );
         }
 
-        public Character[] GetAll ()
-        {
-            var items = new Character[_characters.Count];
-            var Index = 0;
-            foreach (var c in _characters)
-            {
-                items[Index++] = c;
-            }
-            return items;
-        }
+        protected abstract Character FindById ( int id );
+        protected abstract void DeleteCore ( int id );
 
         public Character Get ( int id )
         {
             //TODO: return error
-            if (id<1 || id>_id)
+            if (id<1)
                 return null;
 
-            return CloneCharacter(FindById(id));
+            return GetCore(id);
         }
+
+        protected abstract Character GetCore ( int id );
 
         public string Update ( int id, Character character )
         {
-            //TODO: return error;
-            if (!ValidateCharacter(character, out var message))
-                return message;
+            if (character == null)
+                return "Character == null";
 
-            var c = FindById(id);
-            CopyCharacter(c, character, false);
-            return "";
-        }
+            var errors = ObjectValidator.Validate(character);
+            if (errors.Any())
+                return "Error";
 
-        private Character FindById(int id)
-        {
-            foreach (var c in _characters)
-            {
-                if (c.Id == id)
-                    return c;
-            }
+            if (id<1)
+                return "Id is invalid";
+
+            if (FindById(id) == null)
+                return "Character doesn't exist";
+
+            var testName = FindByName(character.Name);
+            if (testName != null && testName.Id !=null)
+                return "Character must have unique name";
+
+            UpdateCore(id, character);
+
             return null;
         }
 
-        private void CopyCharacter(Character target, Character source, bool copyId)
-        {
-            if(copyId)
-                target.Id = source.Id;
-            target.Name = source.Name;
-            target.Profession = new Profession(source.Profession.Description.Trim());
-            target.Race = new Race(source.Race.Description.Trim());
-            target.Strength = source.Strength;
-            target.Agility = source.Agility;
-            target.Charisma = source.Charisma;
-            target.Constitution = source.Constitution;
-            target.Intelligence = source.Intelligence;
-            target.Description = source.Description;
-        }
-
-        private Character CloneCharacter( Character character)
-        {
-            var temp = new Character();
-            CopyCharacter(temp, character, true);
-            return temp;
-        }
-
-        private bool ValidateCharacter(Character character, out string message)
-        {
-            if(character == null)
-            {
-                message = "null character";
-                return false;
-            }
-
-            if (!character.Validate(out message))
-                return false; 
-
-            foreach (var c in _characters)
-            {
-                if (String.Compare(c?.Name, character.Name,true) == 0)
-                {
-                    message = "Name already exists";
-                    return false;
-                }
-            }
-            message = "";
-            return true;
-        }
+        public IEnumerable<Character> GetAll () => GetAllCore() ?? Enumerable.Empty<Character>();
+        protected abstract IEnumerable<Character> GetAllCore ();
+        protected abstract void UpdateCore ( int id, Character character );
     }
 }

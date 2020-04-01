@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+
 
 namespace CharacterCreator
 {
-    public class Character
+    public class Character : IValidatableObject
     {
         public override string ToString ()
         {
@@ -48,28 +47,47 @@ namespace CharacterCreator
 
         public Profession Profession { get; set; }
 
-        public bool Validate ( out string error )
+        public IEnumerable<ValidationResult> Validate ( ValidationContext validationContext )
         {
             if(String.IsNullOrEmpty(_name))
             {
-                error = "Name is required";
-                return false;
-            }
+                yield return new ValidationResult("Name is required.", new[] { nameof(Name) });
+            };
 
             if(Race == null)
             {
-                error = "Race is required";
-                return false;
-            }
+                yield return new ValidationResult("Race is required.", new[] { nameof(Race) });
+            };
 
             if (Profession == null)
             {
-                error = "Profession is required";
-                return false;
-            }
+                yield return new ValidationResult("Profession is required.", new[] { nameof(Profession) });
+            };
 
-            error = null;
-            return true;
+            if(Strength<1 || Strength > 100)
+            {
+                yield return new ValidationResult("Strength must be between 1 and 100.", new[] { nameof(Strength) });
+            };
+
+            if (Agility<1 || Agility > 100)
+            {
+                yield return new ValidationResult("Agility must be between 1 and 100.", new[] { nameof(Agility) });
+            };
+
+            if (Intelligence<1 || Intelligence > 100)
+            {
+                yield return new ValidationResult("Intelligence must be between 1 and 100.", new[] { nameof(Intelligence) });
+            };
+
+            if (Charisma<1 || Charisma > 100)
+            {
+                yield return new ValidationResult("Charisma must be between 1 and 100.", new[] { nameof(Charisma) });
+            };
+
+            if (Constitution<1 || Constitution > 100)
+            {
+                yield return new ValidationResult("Constitution must be between 1 and 100.", new[] { nameof(Constitution) });
+            };
         }
     }
 }

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent ()
         {
+            this.components = new System.ComponentModel.Container();
             this.CancelCharacter = new System.Windows.Forms.Button();
             this.ConfirmCharacter = new System.Windows.Forms.Button();
             this.RaceComboBox = new System.Windows.Forms.ComboBox();
@@ -48,11 +49,13 @@
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.richTextDescription = new System.Windows.Forms.RichTextBox();
+            this._errors = new System.Windows.Forms.ErrorProvider(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.numberStrength)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numberIntelligence)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numberAgility)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numberConstitution)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numberCharisma)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this._errors)).BeginInit();
             this.SuspendLayout();
             // 
             // CancelCharacter
@@ -93,6 +96,7 @@
             this.textName.Name = "textName";
             this.textName.Size = new System.Drawing.Size(211, 20);
             this.textName.TabIndex = 0;
+            this.textName.Validating += new System.ComponentModel.CancelEventHandler(this.textName_Validating);
             // 
             // ProfessionComboBox
             // 
@@ -277,6 +281,11 @@
             this.richTextDescription.TabIndex = 8;
             this.richTextDescription.Text = "";
             // 
+            // _errors
+            // 
+            this._errors.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.NeverBlink;
+            this._errors.ContainerControl = this;
+            // 
             // CharacterForm
             // 
             this.AcceptButton = this.ConfirmCharacter;
@@ -316,6 +325,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.numberAgility)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numberConstitution)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numberCharisma)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this._errors)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -343,5 +353,6 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.RichTextBox richTextDescription;
+        private System.Windows.Forms.ErrorProvider _errors;
     }
 }
