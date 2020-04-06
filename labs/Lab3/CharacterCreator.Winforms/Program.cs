@@ -1,4 +1,14 @@
-﻿using System;
+﻿/*
+ * ITSE 1430
+ * Lab 3
+ * Program
+ * Spring 2020
+ * Zachary Behn
+ * 
+ * This file is just the entry point for my application
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;

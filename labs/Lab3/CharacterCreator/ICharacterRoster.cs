@@ -1,4 +1,14 @@
-﻿using System;
+﻿/*
+ * ITSE 1430
+ * Lab 3
+ * ICharacterRoster
+ * Spring 2020
+ * Zachary Behn
+ * 
+ * This is the interface implemented by CharacterRoster
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

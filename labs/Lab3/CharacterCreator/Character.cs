@@ -1,4 +1,14 @@
-﻿using System;
+﻿/*
+ * ITSE 1430
+ * Lab 3
+ * Character
+ * Spring 2020
+ * Zachary Behn
+ * 
+ * This file contains the Character type and implements validation
+ */
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 

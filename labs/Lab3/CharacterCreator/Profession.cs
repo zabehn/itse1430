@@ -1,4 +1,14 @@
-﻿using System;
+﻿/*
+ * ITSE 1430
+ * Lab 3
+ * Profession
+ * Spring 2020
+ * Zachary Behn
+ * 
+ * This file houses the Profession and Professions types
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

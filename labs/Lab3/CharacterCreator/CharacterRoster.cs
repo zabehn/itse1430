@@ -1,4 +1,14 @@
-﻿using System;
+﻿/*
+ * ITSE 1430
+ * Lab 3
+ * Character Roster
+ * Spring 2020
+ * Zachary Behn
+ * 
+ * This file is the abstract class implementation of the interface ICharacterRoster
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -64,7 +74,7 @@ namespace CharacterCreator
                 return "Character doesn't exist";
 
             var testName = FindByName(character.Name);
-            if (testName != null && testName.Id !=null)
+            if (testName != null && testName.Id != character.Id)
                 return "Character must have unique name";
 
             UpdateCore(id, character);

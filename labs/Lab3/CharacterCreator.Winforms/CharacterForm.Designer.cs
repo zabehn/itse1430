@@ -61,6 +61,7 @@
             // CancelCharacter
             // 
             this.CancelCharacter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.CancelCharacter.CausesValidation = false;
             this.CancelCharacter.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.CancelCharacter.Location = new System.Drawing.Point(228, 426);
             this.CancelCharacter.Name = "CancelCharacter";

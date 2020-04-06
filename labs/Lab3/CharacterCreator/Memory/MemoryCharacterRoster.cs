@@ -1,4 +1,14 @@
-﻿using System;
+﻿/*
+ * ITSE 1430
+ * Lab 3
+ * MemoryCharacterRoster
+ * Spring 2020
+ * Zachary Behn
+ * 
+ * This file is a memory implementation of CharacterRoster used in the winforms application
+ */
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,11 +23,10 @@ namespace CharacterCreator.Memory
 
         protected override Character AddCore ( Character character )
         {
-            var c = CloneCharacter(character);
             character.Id = _id++;
-            _characters.Add(c);
+            _characters.Add(character);
 
-            return CloneCharacter(c);
+            return CloneCharacter(character);
         }
 
         private Character CloneCharacter ( Character character )

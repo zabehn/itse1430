@@ -1,4 +1,14 @@
-﻿using System;
+﻿/*
+ * ITSE 1430
+ * Lab 3
+ * MainForm
+ * Spring 2020
+ * Zachary Behn
+ * 
+ * This contains the code for the main form that pops up on startup
+ */
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;

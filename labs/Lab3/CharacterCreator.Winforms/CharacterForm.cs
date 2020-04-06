@@ -1,4 +1,14 @@
-﻿using System;
+﻿/*
+ * ITSE 1430
+ * Lab 3
+ * CharacterForm
+ * Spring 2020
+ * Zachary Behn
+ * 
+ * This form pops up when new or edit character is called and handles the user interface functions for those two calls
+ */
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,6 +22,8 @@ namespace CharacterCreator.Winforms
 {
     public partial class CharacterForm : Form
     {
+        int _iD;
+
         public CharacterForm ()
         {
             InitializeComponent();
@@ -25,7 +37,16 @@ namespace CharacterCreator.Winforms
         public CharacterForm( Character character, bool edit) : this()
         {
             Character = character;
-            Text = edit? "Edit Character":"Create New Character";
+            if (edit)
+            {
+                Text = "Edit Character";
+                _iD = character.Id;
+            } 
+            else
+            {
+                Text = "Create New Character";
+                _iD = 0;
+            }
         }
 
         private void OnCancel (object sender, EventArgs e)
@@ -60,6 +81,9 @@ namespace CharacterCreator.Winforms
         private Character getCharacter ()
         {
             var character = new Character();
+
+            if (_iD != 0)
+                character.Id = _iD;
 
             character.Name = textName.Text?.Trim();
             character.Strength = (int) numberStrength.Value;
@@ -98,10 +122,10 @@ namespace CharacterCreator.Winforms
                 numberIntelligence.Value = Character.Intelligence;
                 numberStrength.Value = Character.Strength;
 
-                if(Character.Profession != null)
-                    ProfessionComboBox.SelectedText = Character.Profession.Description;
-                if(Character.Race != null)
-                    RaceComboBox.SelectedText = Character.Race.Description;
+                if (Character.Profession != null)
+                    ProfessionComboBox.SelectedIndex = ProfessionComboBox.FindString(Character.Profession.Description);
+                if (Character.Race != null)
+                    RaceComboBox.SelectedIndex = RaceComboBox.FindString(Character.Race.Description);
 
                 ValidateChildren();
             }

@@ -1,4 +1,14 @@
-﻿using System;
+﻿/*
+ * ITSE 1430
+ * Lab 3
+ * AboutBox
+ * Spring 2020
+ * Zachary Behn
+ * 
+ * This pops up when About is called from the main form, contains basic program information
+ */
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
