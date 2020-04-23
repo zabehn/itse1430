@@ -8,11 +8,8 @@
  * This file is the abstract class implementation of the interface ICharacterRoster
  */
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CharacterCreator
 {
