@@ -14,7 +14,7 @@ namespace Nile.Stores
         /// <returns>The added product.</returns>
         protected override Product AddCore ( Product product )
         {
-            var newProduct = CopyProduct(product);
+             var newProduct = CopyProduct(product);
             _products.Add(newProduct);
 
             if (newProduct.Id <= 0)
@@ -29,7 +29,7 @@ namespace Nile.Stores
         /// <returns>The product, if it exists.</returns>
         protected override Product GetCore ( int id )
         {
-            var product = FindProduct(id);
+            var product = FindProductById(id);
 
             return (product != null) ? CopyProduct(product) : null;
         }
@@ -46,7 +46,7 @@ namespace Nile.Stores
         /// <param name="product">The product to remove.</param>
         protected override void RemoveCore ( int id )
         {
-            var product = FindProduct(id);
+            var product = FindProductById(id);
             if (product != null)
                 _products.Remove(product);
         }
@@ -57,7 +57,7 @@ namespace Nile.Stores
         protected override Product UpdateCore ( Product existing, Product product )
         {
             //Replace 
-            existing = FindProduct(product.Id);
+            existing = FindProductById(product.Id);
             _products.Remove(existing);
             
             var newProduct = CopyProduct(product);
@@ -78,8 +78,20 @@ namespace Nile.Stores
             return newProduct;
         }
 
+        //Check if name exists in list
+        protected override bool NameExists ( string name, int id )
+        {
+            foreach (var product in _products)
+            {
+                if (String.Compare( product.Name, name, true ) == 0 
+                    && product.Id != id)
+                    return true;
+            }
+            return false;
+        }
+
         //Find a product by ID
-        private Product FindProduct ( int id )
+        private Product FindProductById ( int id )
         {
             foreach (var product in _products)
             {

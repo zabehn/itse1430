@@ -18,6 +18,9 @@ namespace Nile.Stores
             if (product==null)
                 throw new ArgumentNullException(nameof(product),"Product is null");
 
+            if (NameExists(product.Name,product.Id))
+                throw new InvalidOperationException("Product name must be unique");
+
             var errors = ObjectValidator.Validate(product);
             if (errors.Any())
                 return null;
@@ -61,6 +64,9 @@ namespace Nile.Stores
             if (product==null)
                 throw new ArgumentNullException(nameof(product),"product can't be null");
 
+            if (NameExists(product.Name, product.Id))
+                throw new InvalidOperationException("Product name must be unique");
+
             var errors = ObjectValidator.Validate(product);
             if (errors.Any())
                 return null;
@@ -72,6 +78,8 @@ namespace Nile.Stores
         }
 
         #region Protected Members
+
+        protected abstract bool NameExists ( string name, int id );
 
         protected abstract Product GetCore( int id );
 
