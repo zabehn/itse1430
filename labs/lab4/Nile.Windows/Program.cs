@@ -1,3 +1,13 @@
+/*
+ * ITSE 1430
+ * Lab 4
+ * Program
+ * Spring 2020
+ * Zachary Behn
+ * 
+ * This file is the entry point for the application
+ */
+
 using System;
 using System.Windows.Forms;
 

@@ -1,5 +1,11 @@
 /*
  * ITSE 1430
+ * Lab 4
+ * IProductDatabase
+ * Spring 2020
+ * Zachary Behn
+ * 
+ * This file is the framework for product databases
  */
 using System;
 using System.Collections.Generic;

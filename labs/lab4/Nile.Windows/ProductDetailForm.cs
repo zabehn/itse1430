@@ -1,5 +1,11 @@
 /*
  * ITSE 1430
+ * Lab 4
+ * ProductDetailForm
+ * Spring 2020
+ * Zachary Behn
+ * 
+ * This file is the add/edit product form
  */
 using System;
 using System.ComponentModel;
@@ -73,7 +79,7 @@ namespace Nile.Windows
             var errors = ObjectValidator.Validate(product);
             if (errors.Any())
             {
-                MessageBox.Show("One or more items are invalid.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("One or more items are invalid. " + errors.FirstOrDefault(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 

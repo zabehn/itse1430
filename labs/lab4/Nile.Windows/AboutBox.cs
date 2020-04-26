@@ -1,4 +1,14 @@
-﻿using System;
+﻿/*
+ * ITSE 1430
+ * Lab 4
+ * AboutBox
+ * Spring 2020
+ * Zachary Behn
+ * 
+ * This file creates an about box that displays information about the application
+ */
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;

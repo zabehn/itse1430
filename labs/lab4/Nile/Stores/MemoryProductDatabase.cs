@@ -1,5 +1,11 @@
 /*
  * ITSE 1430
+ * Lab 4
+ * MemoryProductDatabase
+ * Spring 2020
+ * Zachary Behn
+ * 
+ * This file is a in memory implementation of product database
  */
 using System;
 using System.Collections.Generic;
@@ -68,12 +74,13 @@ namespace Nile.Stores
         
         private Product CopyProduct ( Product product )
         {
-            var newProduct = new Product();
-            newProduct.Id = product.Id;
-            newProduct.Name = product.Name;
-            newProduct.Description = product.Description;
-            newProduct.Price = product.Price;
-            newProduct.IsDiscontinued = product.IsDiscontinued;
+            var newProduct = new Product {
+                Id = product.Id,
+                Name = product.Name,
+                Description = product.Description,
+                Price = product.Price,
+                IsDiscontinued = product.IsDiscontinued
+            };
 
             return newProduct;
         }

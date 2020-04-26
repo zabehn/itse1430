@@ -1,9 +1,17 @@
 /*
  * ITSE 1430
+ * Lab 4
+ * MainForm
+ * Spring 2020
+ * Zachary Behn
+ * 
+ * This file is the form that starts up when the application is started
  */
 using System;
+using System.Configuration;
 using System.Linq;
 using System.Windows.Forms;
+using Nile.Stores.Sql;
 
 namespace Nile.Windows
 {
@@ -20,6 +28,9 @@ namespace Nile.Windows
         protected override void OnLoad( EventArgs e )
         {
             base.OnLoad(e);
+
+            var s = ConfigurationManager.ConnectionStrings["ProductDatabase"];
+            _database = new SqlProductDatabase(s.ConnectionString);
 
             _gridProducts.AutoGenerateColumns = false;
 
@@ -147,6 +158,7 @@ namespace Nile.Windows
                     //Save product
                     _database.Update(child.Product);
                     UpdateList();
+                    return;
                 }catch(Exception ex)
                 {
                     DisplayError(ex.Message);
@@ -173,6 +185,11 @@ namespace Nile.Windows
             {
                 DisplayError($"Can't pull products from database: {e.Message}");
             }
+
+            products = from product in products
+                       orderby product.Name ascending
+                       select product;
+
             _bsProducts.DataSource = products;
         }
 
@@ -181,9 +198,7 @@ namespace Nile.Windows
             MessageBox.Show(message, "Error", MessageBoxButtons.OK,MessageBoxIcon.Error);
         }
 
-        private readonly IProductDatabase _database = new Nile.Stores.MemoryProductDatabase();
+        private IProductDatabase _database;
         #endregion
-
-        
     }
 }

@@ -1,5 +1,11 @@
 /*
  * ITSE 1430
+ * Lab 4
+ * ProductDatabase
+ * Spring 2020
+ * Zachary Behn
+ * 
+ * This file is an abstract implementation of the ProductDatabase interface
  */
 using System;
 using System.Collections.Generic;
